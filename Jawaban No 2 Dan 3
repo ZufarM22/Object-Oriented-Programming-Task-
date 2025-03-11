@@ -1,0 +1,199 @@
+Ini untuk jawaban No 2
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Kelas Product
+class Product {
+private:
+    int id;
+    string name;
+    double price;
+    int stock;
+    string category;
+
+public:
+    // Konstruktor
+    Product(int id, string name, double price, int stock, string category)
+        : id(id), name(name), price(price), stock(stock), category(category) {}
+
+    // Metode untuk memperbarui harga produk
+    void updatePrice(double newPrice) {
+        price = newPrice;
+    }
+
+    // Metode untuk memperbarui jumlah stok produk
+    void updateStock(int newStock) {
+        stock = newStock;
+    }
+
+    // Metode untuk menampilkan informasi produk
+    void displayInfo() {
+        cout << "Product ID: " << id << endl;
+        cout << "Name: " << name << endl;
+        cout << "Price: $" << price << endl;
+        cout << "Stock: " << stock << endl;
+        cout << "Category: " << category << endl;
+    }
+
+    // Metode untuk menerapkan diskon dan menghitung harga setelah diskon
+    double applyDiscount(double discountPercentage) {
+        double discountAmount = (discountPercentage / 100) * price;
+        double finalPrice = price - discountAmount;
+        return finalPrice;
+    }
+};
+
+int main() {
+    // Membuat objek produk
+    Product product1(1, "Laptop", 1200.0, 10, "Electronics");
+
+    // Menampilkan informasi produk sebelum diskon
+    cout << "Product Info before discount: " << endl;
+    product1.displayInfo();
+    
+    // Menerapkan diskon 10% pada produk
+    double discountPercentage = 10.0;
+    double finalPrice = product1.applyDiscount(discountPercentage);
+    
+    cout << "\nPrice after " << discountPercentage << "% discount: $" << finalPrice << endl;
+
+    return 0;
+}
+
+
+Ini Untuk Jawaban No 3 
+.#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Kelas Student
+class Student {
+private:
+    int id;
+    string name;
+
+public:
+    // Konstruktor untuk Student
+    Student(int id, string name) : id(id), name(name) {}
+
+    // Mengambil ID mahasiswa
+    int getId() const {
+        return id;
+    }
+
+    // Mengambil nama mahasiswa
+    string getName() const {
+        return name;
+    }
+};
+
+// Kelas Course
+class Course {
+private:
+    int courseId;
+    string courseName;
+    int maxCapacity;            // Kapasitas maksimum kursus
+    vector<Student*> students;  // Daftar mahasiswa yang terdaftar dalam kursus
+
+public:
+    // Konstruktor untuk Course
+    Course(int courseId, string courseName, int maxCapacity)
+        : courseId(courseId), courseName(courseName), maxCapacity(maxCapacity) {}
+
+    // Metode untuk mendaftar mahasiswa ke kursus
+    bool enroll(Student* student) {
+        if (students.size() < maxCapacity) {
+            students.push_back(student);
+            return true;  // Pendaftaran berhasil
+        } else {
+            return false; // Kursus penuh
+        }
+    }
+
+    // Metode untuk menghapus pendaftaran mahasiswa dari kursus
+    void drop(Student* student) {
+        for (auto it = students.begin(); it != students.end(); ++it) {
+            if ((*it)->getId() == student->getId()) {
+                students.erase(it);
+                break;
+            }
+        }
+    }
+
+    // Metode untuk menampilkan daftar mahasiswa yang terdaftar
+    void getEnrolledStudents() {
+        cout << "Students enrolled in " << courseName << ":\n";
+        if (students.empty()) {
+            cout << "No students enrolled.\n";
+        } else {
+            for (const auto& student : students) {
+                cout << student->getName() << " (ID: " << student->getId() << ")\n";
+            }
+        }
+    }
+
+    // Mengambil nama kursus
+    string getCourseName() const {
+        return courseName;
+    }
+
+    // Mengambil jumlah mahasiswa yang terdaftar
+    int getEnrolledCount() const {
+        return students.size();
+    }
+};
+
+int main() {
+    // Membuat objek mahasiswa
+    Student student1(1, "John Doe");
+    Student student2(2, "Jane Smith");
+    Student student3(3, "Alice Brown");
+    Student student4(4, "Bob White");
+
+    // Membuat objek kursus dengan kapasitas maksimum 3
+    Course course1(101, "Introduction to Programming", 3);
+
+    // Mendaftar mahasiswa ke kursus
+    cout << "Enrolling students...\n";
+    if (course1.enroll(&student1)) {
+        cout << student1.getName() << " successfully enrolled.\n";
+    } else {
+        cout << "Enrollment failed for " << student1.getName() << ". Course is full.\n";
+    }
+
+    if (course1.enroll(&student2)) {
+        cout << student2.getName() << " successfully enrolled.\n";
+    } else {
+        cout << "Enrollment failed for " << student2.getName() << ". Course is full.\n";
+    }
+
+    if (course1.enroll(&student3)) {
+        cout << student3.getName() << " successfully enrolled.\n";
+    } else {
+        cout << "Enrollment failed for " << student3.getName() << ". Course is full.\n";
+    }
+
+    // Mencoba mendaftar mahasiswa keempat setelah kapasitas penuh
+    if (course1.enroll(&student4)) {
+        cout << student4.getName() << " successfully enrolled.\n";
+    } else {
+        cout << "Enrollment failed for " << student4.getName() << ". Course is full.\n";
+    }
+
+    // Menampilkan mahasiswa yang terdaftar
+    course1.getEnrolledStudents();
+
+    // Menghapus pendaftaran mahasiswa
+    cout << "\nDropping a student...\n";
+    course1.drop(&student2);
+    cout << student2.getName() << " has been dropped from the course.\n";
+
+    // Menampilkan mahasiswa yang terdaftar setelah ada yang di-drop
+    course1.getEnrolledStudents();
+
+    return 0;
+}
