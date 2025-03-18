@@ -1,0 +1,136 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+// Parent class Payment
+class Payment {
+protected:
+    int id;
+    double amount;
+    string date;
+    string status;
+
+public:
+    Payment(int id, double amount, string date, string status)
+        : id(id), amount(amount), date(date), status(status) {}
+
+    virtual void processPayment() = 0;  // Pure virtual method
+    virtual void validatePayment() = 0; // Pure virtual method
+    virtual void refundPayment() = 0;   // Pure virtual method
+
+    void displayPaymentDetails() {
+        cout << "Payment ID: " << id << endl;
+        cout << "Amount: " << amount << endl;
+        cout << "Date: " << date << endl;
+        cout << "Status: " << status << endl;
+    }
+};
+
+// Child class CreditCardPayment
+class CreditCardPayment : public Payment {
+private:
+    string cardNumber;
+    string expiryDate;
+    string cvv;
+
+public:
+    CreditCardPayment(int id, double amount, string date, string status,
+                      string cardNumber, string expiryDate, string cvv)
+        : Payment(id, amount, date, status), cardNumber(cardNumber),
+          expiryDate(expiryDate), cvv(cvv) {}
+
+    void processPayment() override {
+        cout << "Processing credit card payment of " << amount << endl;
+    }
+
+    void validatePayment() override {
+        cout << "Validating credit card details: " << cardNumber << ", Expiry: " << expiryDate << endl;
+    }
+
+    void refundPayment() override {
+        cout << "Refunding credit card payment: " << amount << endl;
+    }
+};
+
+// Child class BankTransfer
+class BankTransfer : public Payment {
+private:
+    string accountNumber;
+    string bankName;
+    string transferCode;
+
+public:
+    BankTransfer(int id, double amount, string date, string status,
+                 string accountNumber, string bankName, string transferCode)
+        : Payment(id, amount, date, status), accountNumber(accountNumber),
+          bankName(bankName), transferCode(transferCode) {}
+
+    void processPayment() override {
+        cout << "Processing bank transfer payment of " << amount << endl;
+    }
+
+    void validatePayment() override {
+        cout << "Validating bank transfer details: " << accountNumber << ", Bank: " << bankName << endl;
+    }
+
+    void refundPayment() override {
+        cout << "Refunding bank transfer payment: " << amount << endl;
+    }
+};
+
+// Child class DigitalWallet
+class DigitalWallet : public Payment {
+private:
+    string walletId;
+    string provider;
+    string phoneNumber;
+
+public:
+    DigitalWallet(int id, double amount, string date, string status,
+                  string walletId, string provider, string phoneNumber)
+        : Payment(id, amount, date, status), walletId(walletId),
+          provider(provider), phoneNumber(phoneNumber) {}
+
+    void processPayment() override {
+        cout << "Processing digital wallet payment of " << amount << endl;
+    }
+
+    void validatePayment() override {
+        cout << "Validating digital wallet details: " << walletId << ", Provider: " << provider << endl;
+    }
+
+    void refundPayment() override {
+        cout << "Refunding digital wallet payment: " << amount << endl;
+    }
+};
+
+// Driver Code
+int main() {
+    // Create objects for different types of payment
+    CreditCardPayment cardPayment(1, 500.0, "2025-03-18", "Completed", "1234567812345678", "12/26", "123");
+    BankTransfer bankTransfer(2, 1000.0, "2025-03-18", "Completed", "987654321", "Bank ABC", "ABC123");
+    DigitalWallet walletPayment(3, 300.0, "2025-03-18", "Completed", "wlt12345", "ProviderX", "08123456789");
+
+    // Process payments
+    cardPayment.processPayment();
+    bankTransfer.processPayment();
+    walletPayment.processPayment();
+
+    // Validate payments
+    cardPayment.validatePayment();
+    bankTransfer.validatePayment();
+    walletPayment.validatePayment();
+
+    // Refund payments
+    cardPayment.refundPayment();
+    bankTransfer.refundPayment();
+    walletPayment.refundPayment();
+
+    // Display payment details
+    cardPayment.displayPaymentDetails();
+    bankTransfer.displayPaymentDetails();
+    walletPayment.displayPaymentDetails();
+
+    return 0;
+}
