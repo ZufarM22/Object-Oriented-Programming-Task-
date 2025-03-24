@@ -1,0 +1,161 @@
+Kasus 1: Notifikasi Sistem
+Tujuan:
+Membuat interface INotification untuk berbagai jenis notifikasi.
+
+Mengimplementasikan class untuk Email, SMS, dan Push Notification.
+
+Gunakan strategi pengiriman berdasarkan jenis notifikasi.
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Interface Notifikasi
+class INotification {
+public:
+    virtual void send(const string& message) = 0;
+    virtual ~INotification() {}
+};
+
+// Implementasi Email
+class EmailNotification : public INotification {
+public:
+    void send(const string& message) override {
+        cout << "[Email] Mengirim pesan: " << message << endl;
+    }
+};
+
+// Implementasi SMS
+class SMSNotification : public INotification {
+public:
+    void send(const string& message) override {
+        cout << "[SMS] Mengirim pesan: " << message << endl;
+    }
+};
+
+// Implementasi Push Notification
+class PushNotification : public INotification {
+public:
+    void send(const string& message) override {
+        cout << "[Push] Mengirim pesan: " << message << endl;
+    }
+};
+
+// Fungsi strategi pengiriman notifikasi
+void sendNotification(INotification* notifier, const string& message) {
+    notifier->send(message);
+}
+
+int main() {
+    EmailNotification email;
+    SMSNotification sms;
+    PushNotification push;
+
+    vector<INotification*> notifications = { &email, &sms, &push };
+
+    for (INotification* notif : notifications) {
+        sendNotification(notif, "Selamat! Anda mendapat update penting.");
+    }
+
+    return 0;
+}
+
+ Kasus 2: Game Character System
+Tujuan:
+Membuat abstraksi karakter game: Character (Player, Enemy, NPC).
+
+Mengimplementasikan interface untuk kemampuan: (IAttack, IHeal, IDefend.)
+
+#include <iostream>
+using namespace std;
+
+// Interface kemampuan
+class IAttack {
+public:
+    virtual void attack() = 0;
+};
+
+class IHeal {
+public:
+    virtual void heal() = 0;
+};
+
+class IDefend {
+public:
+    virtual void defend() = 0;
+};
+
+// Abstraksi karakter
+class Character {
+protected:
+    string name;
+public:
+    Character(const string& n) : name(n) {}
+    virtual void display() {
+        cout << "Karakter: " << name << endl;
+    }
+    virtual ~Character() {}
+};
+
+// Player: bisa menyerang, menyembuhkan, bertahan
+class Player : public Character, public IAttack, public IHeal, public IDefend {
+public:
+    Player(const string& n) : Character(n) {}
+    void attack() override {
+        cout << name << " menyerang musuh!" << endl;
+    }
+    void heal() override {
+        cout << name << " menyembuhkan dirinya sendiri." << endl;
+    }
+    void defend() override {
+        cout << name << " bertahan dari serangan!" << endl;
+    }
+};
+
+// Enemy: hanya bisa menyerang dan bertahan
+class Enemy : public Character, public IAttack, public IDefend {
+public:
+    Enemy(const string& n) : Character(n) {}
+    void attack() override {
+        cout << name << " menyerang dengan brutal!" << endl;
+    }
+    void defend() override {
+        cout << name << " mencoba bertahan." << endl;
+    }
+};
+
+// NPC: tidak memiliki kemampuan bertarung
+class NPC : public Character {
+public:
+    NPC(const string& n) : Character(n) {}
+    void talk() {
+        cout << name << " berkata: Selamat datang di desa kami!" << endl;
+    }
+};
+
+int main() {
+    Player hero("Arjuna");
+    Enemy goblin("Goblin Jahat");
+    NPC villager("Pak Tua");
+
+    hero.display();
+    hero.attack();
+    hero.heal();
+    hero.defend();
+
+    cout << endl;
+
+    goblin.display();
+    goblin.attack();
+    goblin.defend();
+
+    cout << endl;
+
+    villager.display();
+    villager.talk();
+
+    return 0;
+}
+
+
+
